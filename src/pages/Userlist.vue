@@ -131,43 +131,6 @@ const data = [];
 //     scoped: 10,
 //     city: "海南"
 //   },
-//   {
-//     key: "2",
-//     name: "Jim Green",
-//     age: 42,
-//     address: "London No. 1 Lake Park",
-//     time: "2018-11-11",
-//     gender: "男",
-//     profession: "作家",
-//     sign: "user1",
-//     scoped: 10,
-//     city: "海南"
-//   },
-//   {
-//     key: "3",
-//     name: "Joe Black",
-//     age: 32,
-//     address: "Sidney No. 1 Lake Park",
-//     time: "2018-11-11",
-//     gender: "女",
-//     profession: "作家",
-//     sign: "user1",
-//     scoped: 10,
-//     city: "海南"
-//   },
-//   {
-//     key: "4",
-//     name: "Jim Red",
-//     age: 32,
-//     address: "London No. 2 Lake Park",
-//     time: "2018-11-11",
-//     gender: "男",
-//     profession: "作家",
-//     sign: "user1",
-//     scoped: 10,
-//     city: "海南"
-//   }
-// ];
 
 for (let i = 1; i < 10; i++) {
   data.push({

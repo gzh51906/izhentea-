@@ -72,7 +72,7 @@ for (let i = 1; i < 10; i++) {
   data.push({
     key: i,
     sort: i,
-    name: `iphone - ${i}`,
+    name: `铁公鸡 - ${i}`,
     time: "2019-9-1" + i
   });
 }
@@ -117,7 +117,7 @@ export default {
 <style  scoped>
 .goodskinds {
   width: 100%;
-  height: 84%;
+  height: 64%;
   /* margin-top: 100px; */
   background: #ccc;
   overflow: hidden;

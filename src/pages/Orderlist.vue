@@ -92,7 +92,7 @@ for (let i = 1; i < 10; i++) {
   data.push({
     key: i,
     sort: i,
-    name: `iphone - ${i}`,
+    name: `普洱 - ${i}`,
     price: 10 + i * 20,
     num: i,
     pay: i * 9,
