@@ -2,6 +2,7 @@
   <div class="userlist">
     <!-- <h1>商品列表</h1> -->
 
+    <!-- 全选框 -->
     <div style="margin-bottom: 16px">
       <a-button type="primary" @click="start" :disabled="!hasSelected" :loading="loading">Reload</a-button>
       <span style="margin-left: 8px">
