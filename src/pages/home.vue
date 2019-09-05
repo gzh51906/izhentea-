@@ -41,14 +41,13 @@
     </div>
 
     <div class="H_right">
-      <a-row style="height:60px;background-color:#fff">
-        <a-col :span="24">col-12</a-col>
-      </a-row>
+      <top></top>
       <router-view></router-view>
     </div>
   </div>
 </template>
 <script>
+import top from "../components/top.vue";
 export default {
   data() {
     return {
@@ -127,7 +126,8 @@ export default {
     goto(path) {
       this.$router.push({ path: path });
     }
-  }
+  },
+  components: { top }
 };
 </script>
 
