@@ -1,3 +1,4 @@
+
 <template>
   <div class="goodslist">
     <div class="top">
@@ -214,3 +215,4 @@ export default {
   overflow: hidden;
 }
 </style>
+
