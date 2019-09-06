@@ -7,22 +7,23 @@ const { formatData, token } = require('../utils')
 
 // 增：注册用户
 Router.post('/reg', async (req, res) => {
-    let { username, password, age, gender } = req.body;
-    let data
+    let { user, name, password, phone, sex, brit, mail, text } = req.body;
+
     try {
-        insert('user', { username, password, age, gender });//{username,password,age,gender}
+        insert('user', { user, name, password, phone, sex, brit, mail, text });//{username,password,age,gender}
         res.send(formatData())
     } catch (err) {
         res.send(formatData({ code: 0 }))
     }
 })
 
+
 // 验证用户名是否存在
 Router.get('/check', async (req, res) => {
     let { username } = req.query;
     let data
     try {
-        data = await find('user', { username });//{username,password,age,gender}
+        data = await find('M_user', { username });//{username,password,age,gender}
         data = data[0];
         if (data) {
             res.send(formatData({ code: 0 }))
@@ -54,7 +55,17 @@ Router.post('/login', async (req, res) => {
     }
 })
 
-
+// 删
+Router.delete('/:id', (req, res) => {
+    let { id } = req.params;
+    let data
+    try {
+        remove('user', { _id: id })
+        res.send(formatData())
+    } catch (err) {
+        res.send(formatData({ code: 0 }))
+    }
+})
 
 // 查（获取所有用户）：get /user
 Router.get('/', async (req, res) => {
