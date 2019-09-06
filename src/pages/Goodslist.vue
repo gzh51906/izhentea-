@@ -109,19 +109,27 @@ const data = [];
 //     city: "海南"
 //   }]
 
-for (let i = 1; i < 100; i++) {
+for (let i = 1; i < 30; i++) {
   data.push({
     key: i,
     sort: i,
     name: `茶叶 - ${i}`,
-    kinds: "赛亚人" + i,
+    kinds: i % 3 == 0 ? "普洱茶" : "铁观音",
     oldpirce: i * 10,
     currentpirce: i * 9,
     Stock: i * 100,
     status: i % 2 == 0 ? "上线" : "下线",
-    time: "2019-9-1" + i
+    time: "2019-9-1" + (i % 10),
+    haha: function() {
+      if (i % 2 == 0) {
+        return ahah;
+      }
+    }
   });
 }
+console.log(data);
+
+console.log(JSON.stringify(data));
 
 function onChange(pagination, filters, sorter) {
   console.log("params", pagination, filters, sorter);
