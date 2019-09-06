@@ -210,6 +210,15 @@ export default {
             text: this.text
           }
         );
+        this.user = "";
+        this.name = "";
+        this.password = "";
+        this.password2 = "";
+        this.phone = "";
+        this.value = "";
+        this.brit = "";
+        this.mail = "";
+        this.text = "";
       } else {
         alert("填写的信息有错误");
       }

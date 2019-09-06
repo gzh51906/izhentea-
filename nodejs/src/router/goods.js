@@ -23,11 +23,11 @@ Router.post('/plus', async (req, res) => {
 
 // 增加商品
 Router.post('/addgoods', async (req, res) => {
-    let { goodstitle, goodstitle2, goodsprice, saleprice, num, value, nature, text, putaway } = req.body;
-
+    let { goodstitle, goodstitle2, goodsprice, saleprice, stock, kinds, nature, text, status } = req.body;
+    console.log({ goodstitle, goodstitle2, goodsprice, saleprice, stock, kinds, nature, text, status })
     try {
 
-        insert('M_goodslist', { goodstitle, goodstitle2, goodsprice, saleprice, num, value, nature, text, putaway });
+        insert('M_goodslist', { goodstitle, goodstitle2, goodsprice, saleprice, stock, kinds, nature, text, status });
         res.send(formatData())
     } catch (err) {
         res.send(formatData({ code: 0 }))

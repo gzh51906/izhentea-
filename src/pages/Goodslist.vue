@@ -4,7 +4,7 @@
     <div class="top">
       <div class="left">
         <!-- 按钮 -->
-        <van-button icon="add-o" type="primary">添加</van-button>
+        <van-button icon="add-o" type="primary" @click="goto('addgoods')">添加</van-button>
         <van-button icon="delete">按钮</van-button>
       </div>
       <div class="right">
@@ -35,7 +35,7 @@
         :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
       >
         <span slot="action" slot-scope="text">
-          <a href="javascript:;">修改</a>
+          <a href="javascript:;" @click="goto('goodspatch')">修改</a>
           <a-divider type="vertical" />
           <!-- <a href="javascript:;" @click="delete">删除</a> -->
           <a-button click="delete" @click="haha(text)">删除</a-button>
@@ -196,6 +196,9 @@ export default {
     onSelectChange(selectedRowKeys) {
       console.log("selectedRowKeys changed: ", selectedRowKeys);
       this.selectedRowKeys = selectedRowKeys;
+    },
+    goto(name) {
+      this.$router.push({ name });
     }
   },
   computed: {

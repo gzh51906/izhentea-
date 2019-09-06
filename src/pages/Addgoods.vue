@@ -55,7 +55,7 @@
     <!-- 库存 -->
     <div class="goodsname">
       <label for="kucun">库存</label>
-      <input type="text" name id="kucun" placeholder="请输入" v-model="num" />
+      <input type="text" name id="kucun" placeholder="请输入" v-model="stock" />
     </div>
     <!-- 选择 -->
     <div class="check">
@@ -99,11 +99,11 @@ export default {
       // 商品类别
       // sort: "",
       // 库存
-      num: "",
+      stock: "",
       // 商品属性
       nature: [],
       // 上架
-      putaway: "上线",
+      status: "上线",
       // 描述
       goodstext: "",
       // 下拉选择
@@ -205,9 +205,9 @@ export default {
     shangjia(e) {
       // console.log(`checked = ${e}`);
       if (e) {
-        this.putaway = "上线";
+        this.status = "上线";
       } else {
-        this.putaway = "";
+        this.status = "";
       }
     },
     // 商品描述
@@ -238,12 +238,11 @@ export default {
           goodstitle2: this.goodstitle2,
           goodsprice: this.goodsprice,
           saleprice: this.saleprice,
-          num: this.num,
-          value: this.value,
+          stock: this.stock,
+          kinds: this.value,
           nature: this.nature,
-
           text: this.text,
-          putaway: this.putaway
+          status: this.status
         }
       );
       alert("添加成功");
@@ -251,9 +250,9 @@ export default {
       this.goodstitle2 = "";
       this.goodsprice = "";
       this.saleprice = "";
-      this.num = "";
+      this.stock = "";
       this.nature = [];
-      this.putaway = "上线";
+      this.status = "上线";
       this.goodstext = "";
       this.value = undefined;
       this.goodstext = "";

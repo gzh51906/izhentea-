@@ -3,7 +3,7 @@
     <div class="top">
       <div class="left">
         <!-- 按钮 -->
-        <van-button icon="add-o" type="primary">添加</van-button>
+        <van-button icon="add-o" type="primary" @click="goto">添加</van-button>
         <van-button icon="delete">按钮</van-button>
       </div>
     </div>
@@ -177,6 +177,9 @@ export default {
     onSelectChange(selectedRowKeys) {
       console.log("selectedRowKeys changed: ", selectedRowKeys);
       this.selectedRowKeys = selectedRowKeys;
+    },
+    goto() {
+      this.$router.push({ name: "addusers" });
     }
   },
   computed: {
