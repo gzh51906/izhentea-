@@ -8,6 +8,7 @@ import Addgoods from "../pages/Addgoods.vue"
 import Addusers from "../pages/Addusers.vue"
 import Orderlist from "../pages/Orderlist.vue"
 import Userlist from "../pages/Userlist.vue"
+import Goodspatch from "../pages/Goodspatch.vue"
 
 // 路由
 // 1.引入路由
@@ -55,7 +56,12 @@ let router = new VueRouter({
                 name: 'userlist',
                 path: 'userlist',
                 component: Userlist
-            },
+            }, {
+                // 当浏览器路径为/home时，渲染Home组件内容
+                name: 'goodspatch',
+                path: 'goodspatch',
+                component: Goodspatch
+            }
         ]
 
 
