@@ -46,6 +46,10 @@ exports.remove = async (colName, query) => {
 
     //  获取集合
     let collection = db.collection(colName);
+    // console.log(query, query._id, ObjectId(query._id))
+    if (query._id) {
+        query._id = ObjectId(query._id);
+    }
 
     collection.deleteMany(query)
 

@@ -23,17 +23,37 @@ Router.post('/plus', async (req, res) => {
 
 // 增加商品
 Router.post('/addgoods', async (req, res) => {
-    let { id, goodsname, fenlei, price, nowprice, num, buff, time } = req.body;
+    let { goodstitle, goodstitle2, goodsprice, saleprice, num, value, nature, text, putaway } = req.body;
 
-    // let data
     try {
-        //两个参数（colname/数据库名，data/传入的数据）
-        insert('M_goodslist', { id, goodsname, fenlei, price, nowprice, num, buff, time });//{username,password,age,gender}
+
+        insert('M_goodslist', { goodstitle, goodstitle2, goodsprice, saleprice, num, value, nature, text, putaway });
         res.send(formatData())
     } catch (err) {
         res.send(formatData({ code: 0 }))
     }
 })
+
+// 查（）：orderlist
+Router.get('/orderlist', async (req, res) => {
+    let { skip, limit, sort } = req.query;
+    let data = await find('M_orderlist', {}, { skip, limit, sort });
+    // console.log(data);
+
+    res.send(formatData({ data }))
+})
+
+
+// 删（）：orderlist
+Router.delete('/orderdel', async (req, res) => {
+    let { _id } = req.body;
+    // console.log({ _id }, req.body)
+    let data = await remove('M_orderlist', { _id });
+    // console.log(data);
+
+    res.send(formatData({ data }))
+})
+
 
 
 // 查（获取所有商品数据）：get /user

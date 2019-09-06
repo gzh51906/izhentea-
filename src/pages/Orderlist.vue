@@ -11,12 +11,12 @@
 
     <a-table
       :columns="columns"
-      :dataSource="data"
+      :dataSource="list"
       @change="onChange"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
     >
-      <span slot="action">
-        <a href="javascript:;">删除</a>
+      <span slot="action" slot-scope="text">
+        <a href="javascript:;" @click="del(text)">删除</a>
 
         <!-- <a-divider type="vertical" /> -->
         <!-- <a href="javascript:;" class="ant-dropdown-link">
@@ -68,40 +68,27 @@ const columns = [
   },
   {
     title: "操作",
-    key: "操作",
+    key: "action",
     scopedSlots: { customRender: "action" }
   }
 ];
 
-const data = [];
-// const data = [
-//   {
-//     key: "1",
-//     name: "John Brown",
-//     age: 32,
-//     address: "New York No. 1 Lake Park",
-//     time: "2018-11-11",
-//     gender: "女",
-//     profession: "作家",
-//     sign: "user1",
-//     scoped: 10,
-//     city: "海南"
-//   }]
+// const data = [];
 
-for (let i = 1; i < 10; i++) {
-  data.push({
-    key: i,
-    sort: i,
-    name: `普洱 - ${i}`,
-    price: 10 + i * 20,
-    num: i,
-    pay: i * 9,
-    time: "2018-11-1" + i,
-    shopcount: i * 10,
-    ordercount: i * 8,
-    time: "2019-9-1" + i
-  });
-}
+// for (let i = 1; i < 10; i++) {
+//   data.push({
+//     key: i,
+//     sort: i,
+//     name: `普洱 - ${i}`,
+//     price: 10 + i * 20,
+//     num: i,
+//     pay: i * 9,
+//     time: "2018-11-1" + i,
+//     shopcount: i * 10,
+//     ordercount: i * 8,
+//     time: "2019-9-1" + i
+//   });
+// }
 
 function onChange(pagination, filters, sorter) {
   console.log("params", pagination, filters, sorter);
@@ -110,7 +97,8 @@ function onChange(pagination, filters, sorter) {
 export default {
   data() {
     return {
-      data,
+      // data,
+      list: [],
       columns,
       selectedRowKeys: [], // Check here to configure the default column
       loading: false
@@ -131,11 +119,37 @@ export default {
     onSelectChange(selectedRowKeys) {
       console.log("selectedRowKeys changed: ", selectedRowKeys);
       this.selectedRowKeys = selectedRowKeys;
+    },
+    async del(id) {
+      let { data } = await this.$axios.delete(
+        "http://localhost:8888/goods/orderdel",
+        {
+          data: { _id: id._id }
+        }
+      );
+
+      let newdata = await this.$axios.get(
+        "http://localhost:8888/goods/orderlist",
+        {}
+      );
+      this.list = newdata.data.data;
     }
   },
   computed: {
     hasSelected() {
       return this.selectedRowKeys.length > 0;
+    }
+  },
+  async created() {
+    // 获取数据库里的商品信息
+    let {
+      data: { data }
+    } = await this.$axios.get("http://localhost:8888/goods/orderlist", {});
+    this.list = data;
+  },
+  watch: {
+    data(a, b) {
+      console.log(a, b);
     }
   }
 };
@@ -143,7 +157,7 @@ export default {
 <style  scoped>
 .orderlist {
   width: 100%;
-  height: 84%;
+  height: 1000px;
   /* margin-top: 100px; */
   background: #ccc;
   overflow: hidden;

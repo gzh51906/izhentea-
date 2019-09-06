@@ -2,19 +2,19 @@
   <div class="addgoods">
     <div class="goodsname">
       <label for="name">商品名称</label>
-      <input type="text" name id="name" placeholder="请输入标题" />
+      <input type="text" name id="name" placeholder="请输入标题" v-model="goodstitle" />
       <span>50字以内</span>
     </div>
     <div class="goodsname">
       <label for="two">商品副标题</label>
-      <input type="text" name id="two" placeholder="请输入" />
+      <input type="text" name id="two" placeholder="请输入" v-model="goodstitle2" />
       <span>100字以内</span>
     </div>
     <div class="goodsname">
       <label for="price">商品价格</label>
-      <input type="text" name id="price" placeholder="请输入" />
+      <input type="text" name id="price" placeholder="请输入" v-model="goodsprice" />
       <label for="sale">销售价格</label>
-      <input type="text" name id="sale" placeholder="请输入" />
+      <input type="text" name id="sale" placeholder="请输入" v-model="saleprice" />
     </div>
     <div class="goodsname">
       <label for="two">商品分类</label>
@@ -55,7 +55,7 @@
     <!-- 库存 -->
     <div class="goodsname">
       <label for="kucun">库存</label>
-      <input type="text" name id="kucun" placeholder="请输入" />
+      <input type="text" name id="kucun" placeholder="请输入" v-model="num" />
     </div>
     <!-- 选择 -->
     <div class="check">
@@ -86,23 +86,63 @@
 export default {
   data() {
     return {
+      // id
+      // id: 0,
+      // 商品标题
+      goodstitle: "",
+      // 商品副标题
+      goodstitle2: "",
+      // 商品价格
+      goodsprice: "",
+      // 商品售价
+      saleprice: "",
+      // 商品类别
+      // sort: "",
+      // 库存
+      num: "",
+      // 商品属性
+      nature: [],
+      // 上架
+      putaway: "上线",
+      // 描述
+      goodstext: "",
       // 下拉选择
       value: undefined,
       treeData: [
         {
-          title: "手机",
-          value: "0-0",
+          title: "铁观音",
+          value: "铁观音",
           key: "0-0"
         },
         {
-          title: "电脑",
-          value: "0-1",
+          title: "大红袍",
+          value: "大红袍",
           key: "0-1"
         },
         {
-          title: "电视",
-          value: "0-2",
+          title: "白茶",
+          value: "白茶",
           key: "0-2"
+        },
+        {
+          title: "碧螺春",
+          value: "碧螺春",
+          key: "0-3"
+        },
+        {
+          title: "普洱",
+          value: "普洱",
+          key: "0-4"
+        },
+        {
+          title: "红茶",
+          value: "红茶",
+          key: "0-5"
+        },
+        {
+          title: "绿茶",
+          value: "绿茶",
+          key: "0-6"
         }
       ],
       // 上传图片
@@ -133,34 +173,96 @@ export default {
     handleChange({ fileList }) {
       this.fileList = fileList;
     },
-    // 选择
+    // 选择 商品属性
     onChange1(e) {
-      console.log(`checked = ${e.target.checked}`);
+      // console.log(`checked = ${e.target.checked}`);
+      if (e.target.checked) {
+        this.nature.push("热卖");
+      } else {
+        let a = this.nature.indexOf("热卖");
+        this.nature.splice(a, 1);
+      }
     },
     onChange2(e) {
-      console.log(`checked = ${e.target.checked}`);
+      // console.log(`checked = ${e.target.checked}`);
+      if (e.target.checked) {
+        this.nature.push("推荐");
+      } else {
+        let a = this.nature.indexOf("推荐");
+        this.nature.splice(a, 1);
+      }
     },
     onChange3(e) {
-      console.log(`checked = ${e.target.checked}`);
+      // console.log(`checked = ${e.target.checked}`);
+      if (e.target.checked) {
+        this.nature.push("促销");
+      } else {
+        let a = this.nature.indexOf("促销");
+        this.nature.splice(a, 1);
+      }
     },
     // 上架
     shangjia(e) {
-      console.log(`checked = ${e}`);
+      // console.log(`checked = ${e}`);
+      if (e) {
+        this.putaway = "上线";
+      } else {
+        this.putaway = "";
+      }
     },
     // 商品描述
     miaoshu(e) {
       // console.log(e.path.)
-      console.log(this.text);
+      // console.log(this.text);
     },
     //提交按钮
-    ok() {
-      console.log("success");
+    async ok() {
+      // this.id++;
+      // console.log("success");
+      // console.log(
+      //   this.goodstitle,
+      //   this.goodstitle2,
+      //   this.goodsprice,
+      //   this.saleprice,
+      //   this.num,
+      //   this.value,
+      //   this.nature,
+      //   this.text,
+      //   this.putaway
+      // );
+      let { data } = await this.$axios.post(
+        "http://localhost:8888/goods/addgoods",
+        {
+          // id: this.id,
+          goodstitle: this.goodstitle,
+          goodstitle2: this.goodstitle2,
+          goodsprice: this.goodsprice,
+          saleprice: this.saleprice,
+          num: this.num,
+          value: this.value,
+          nature: this.nature,
+
+          text: this.text,
+          putaway: this.putaway
+        }
+      );
+      alert("添加成功");
+      this.goodstitle = "";
+      this.goodstitle2 = "";
+      this.goodsprice = "";
+      this.saleprice = "";
+      this.num = "";
+      this.nature = [];
+      this.putaway = "上线";
+      this.goodstext = "";
+      this.value = undefined;
+      this.goodstext = "";
     }
   },
   watch: {
     // 下拉选择监听
     value(value) {
-      console.log(value);
+      // console.log(value);
     }
   }
 };
