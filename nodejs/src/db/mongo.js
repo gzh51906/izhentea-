@@ -46,6 +46,7 @@ exports.remove = async (colName, query) => {
 
     //  获取集合
     let collection = db.collection(colName);
+    console.log(query, "---------------------");
 
     collection.deleteMany(query)
 

@@ -35,21 +35,86 @@ Router.post('/addgoods', async (req, res) => {
     }
 })
 
-
-// 查（获取所有商品数据）：get /user
-Router.get('/', async (req, res) => {
+//--------------------------M_goodslist
+// 查（获取 M_goodslist  所有商品数据）：get /user
+Router.get('/mgoodslist', async (req, res) => {
     let { skip, limit, sort } = req.query;
-    let data = await find('goods', {}, { skip, limit, sort });
+    let data = await find('M_goodslist', {}, { skip, limit, sort });
     // console.log(data);
 
     res.send(formatData({ data }))
 })
 
-
-Router.get('/:id', async (req, res) => {
+// 删 M_goodslist 的某条数据
+Router.get('/mgoodslist/:id', (req, res) => {
     let { id } = req.params;
-    let data = await find('user', { _id: id });
+    let data
+    try {
+        remove('M_goodslist', { key: id })
+        res.send(formatData())
+    } catch (err) {
+        res.send(formatData({ code: 0 }))
+    }
+})
+//--------------------------M_goodslist
+
+//M_goodskinds--------------------------
+Router.get('/mgoodskinds', async (req, res) => {
+    let { skip, limit, sort } = req.query;
+    let data = await find('M_goodskinds', {}, { skip, limit, sort });
     res.send(formatData({ data }))
 })
+
+Router.get('/mgoodskinds/:id', (req, res) => {
+    console.log(req.params);
+    let { id } = req.params;
+    console.log(id);
+
+    let data
+    try {
+        remove('M_goodskinds', { key: id })
+        // res.send(formatData())
+        res.send("1")
+    } catch (err) {
+        res.send(formatData({ code: 0 }))
+    }
+})
+
+//M_goodskinds--------------------------
+
+
+//--------------------------M_userlist
+Router.get('/muserlist', async (req, res) => {
+    let { skip, limit, sort } = req.query;
+    let data = await find('M_userlist', {}, { skip, limit, sort });
+    res.send(formatData({ data }))
+})
+
+Router.get('/muserlist/:id', (req, res) => {
+    console.log(req.params);
+    let { id } = req.params;
+    console.log(id);
+
+    let data
+    try {
+        remove('M_userlist', { key: id })
+        // res.send(formatData())
+        res.send("1")
+    } catch (err) {
+        res.send(formatData({ code: 0 }))
+    }
+})
+
+//--------------------------M_userlist
+
+
+
+
+
+// Router.get('/:id', async (req, res) => {
+//     let { id } = req.params;
+//     let data = await find('user', { _id: id });
+//     res.send(formatData({ data }))
+// })
 
 module.exports = Router;

@@ -29,6 +29,7 @@ Router.use((req, res, next) => {
 // 商品
 Router.use('/yulist', yulist);
 Router.use('/goods', goodsRouter);
+// Router.use('/goods/mgoodskinds', goodsRouter);
 Router.use('/user', userRouter);
 Router.get('/verify', (req, res) => {
     // 获取前端传入的token

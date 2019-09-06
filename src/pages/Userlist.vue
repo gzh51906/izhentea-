@@ -1,5 +1,13 @@
 <template>
   <div class="userlist">
+    <div class="top">
+      <div class="left">
+        <!-- 按钮 -->
+        <van-button icon="add-o" type="primary">添加</van-button>
+        <van-button icon="delete">按钮</van-button>
+      </div>
+    </div>
+
     <!-- <h1>商品列表</h1> -->
 
     <!-- 全选框 -->
@@ -16,12 +24,10 @@
       @change="onChange"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
     >
-      <span slot="action">
+      <span slot="action" slot-scope="text">
         <a href="javascript:;">修改</a>
         <a-divider type="vertical" />
-        <a href="javascript:;">删除</a>
-        <a-divider type="vertical" />
-        <a href="javascript:;">下架</a>
+        <a href="javascript:;" @click="deleteData(text)">删除</a>
         <!-- <a-divider type="vertical" /> -->
         <!-- <a href="javascript:;" class="ant-dropdown-link">
           More actions
@@ -74,8 +80,8 @@ const columns = [
     sorter: (a, b) => a.age - b.age
   },
   {
-    title: "Address",
-    dataIndex: "address",
+    title: "city",
+    dataIndex: "city",
     filters: [
       {
         text: "London",
@@ -112,46 +118,42 @@ const columns = [
   },
   {
     title: "操作",
-    key: "操作",
+    key: "action",
     scopedSlots: { customRender: "action" }
   }
 ];
 
 const data = [];
-// const data = [
-//   {
-//     key: "1",
-//     name: "John Brown",
-//     age: 32,
-//     address: "New York No. 1 Lake Park",
-//     time: "2018-11-11",
-//     gender: "女",
-//     profession: "作家",
-//     sign: "user1",
-//     scoped: 10,
-//     city: "海南"
-//   },
-
-for (let i = 1; i < 10; i++) {
-  data.push({
-    key: i,
-    name: `Edward King ${i}`,
-    age: 32,
-    address: `London, Park Lane no. ${i}`,
-    time: "2018-11-1" + i,
-    gender: "男",
-    profession: "作家",
-    sign: "user" + i,
-    scoped: i,
-    city: "海南"
-  });
-}
 
 function onChange(pagination, filters, sorter) {
   console.log("params", pagination, filters, sorter);
 }
 
+//数据删除
+async function deleteData(data) {
+  console.log(data.key);
+  await this.$axios.get(
+    `http://localhost:8888/goods/muserlist/${data.key}`,
+    {}
+  );
+
+  let getdata = await this.$axios.get(
+    "http://localhost:8888/goods/muserlist",
+    {}
+  );
+  this.data = getdata.data.data;
+}
+
 export default {
+  async created() {
+    let getdata = await this.$axios.get(
+      "http://localhost:8888/goods/muserlist",
+      {}
+    );
+
+    this.data = getdata.data.data;
+  },
+
   data() {
     return {
       data,
@@ -162,7 +164,7 @@ export default {
   },
   methods: {
     onChange,
-
+    deleteData,
     //选择和操作
     start() {
       this.loading = true;
@@ -187,9 +189,26 @@ export default {
 <style  scoped>
 .userlist {
   width: 100%;
-  height: 84%;
+  height: 1000px;
   /* margin-top: 100px; */
   background: #ccc;
   overflow: hidden;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* border: 1px solid #000; */
+  height: 1.333333rem;
+  overflow: hidden;
+}
+.van-button {
+  border: 0.013333rem solid rgba(201, 201, 201, 1);
+  margin-left: 0.2rem;
+}
+.left {
+  display: flex;
+  align-items: center;
 }
 </style>

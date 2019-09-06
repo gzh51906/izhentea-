@@ -34,10 +34,11 @@
         @change="onChange"
         :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
       >
-        <span slot="action">
+        <span slot="action" slot-scope="text">
           <a href="javascript:;">修改</a>
           <a-divider type="vertical" />
-          <a href="javascript:;">删除</a>
+          <!-- <a href="javascript:;" @click="delete">删除</a> -->
+          <a-button click="delete" @click="haha(text)">删除</a-button>
           <a-divider type="vertical" />
           <a href="javascript:;">上架</a>
           <!-- <a-divider type="vertical" /> -->
@@ -57,85 +58,119 @@ const columns = [
   {
     title: "#",
     dataIndex: "sort"
+    // key: "sort",
     // onFilter: (value, record) => record.name.indexOf(value) === 0,
     // sorter: (a, b) => a.name.length - b.name.length
   },
   {
     title: "商品名称",
-    dataIndex: "name"
+    dataIndex: "name",
+    key: "name"
   },
   {
     title: "分类",
-    dataIndex: "kinds"
+    dataIndex: "kinds",
+    key: "kinds",
+    filters: [
+      {
+        text: "铁观音",
+        value: "铁观音"
+      },
+      {
+        text: "普洱茶",
+        value: "普洱茶"
+      },
+      {
+        text: "茉莉花茶",
+        value: "茉莉花茶"
+      },
+      {
+        text: "碧螺春",
+        value: "碧螺春"
+      },
+      {
+        text: "白茶",
+        value: "白茶"
+      },
+      {
+        text: "绿茶",
+        value: "绿茶"
+      }
+    ],
+    filterMultiple: false,
+    onFilter: (value, record) => {
+      // console.log(value, record);
+
+      return record.kinds.indexOf(value) === 0;
+    },
+    sorter: (a, b) => a.kinds.length - b.kinds.length
   },
   {
     title: "价格(原价)",
-    dataIndex: "oldpirce"
+    dataIndex: "oldpirce",
+    key: "oldpirce",
+    sorter: (a, b) => a.oldpirce - b.oldpirce
   },
   {
     title: "价格(现价)",
-    dataIndex: "currentpirce"
+    dataIndex: "currentpirce",
+    key: "currentpirce",
+    sorter: (a, b) => a.currentpirce - b.currentpirce
   },
   {
     title: "库存",
-    dataIndex: "Stock"
+    dataIndex: "Stock",
+    key: "Stock"
   },
   {
     title: "状态",
-    dataIndex: "status"
+    dataIndex: "status",
+    key: "status"
   },
   {
     title: "添加时间",
-    dataIndex: "time"
+    dataIndex: "time",
+    key: "time",
+    sorter: (a, b) => a.time - b.time
   },
   {
     title: "操作",
-    key: "操作",
+    key: "action",
     scopedSlots: { customRender: "action" }
   }
 ];
 
 const data = [];
-// const data = [
-//   {
-//     key: "1",
-//     name: "John Brown",
-//     age: 32,
-//     address: "New York No. 1 Lake Park",
-//     time: "2018-11-11",
-//     gender: "女",
-//     profession: "作家",
-//     sign: "user1",
-//     scoped: 10,
-//     city: "海南"
-//   }]
-
-for (let i = 1; i < 30; i++) {
-  data.push({
-    key: i,
-    sort: i,
-    name: `茶叶 - ${i}`,
-    kinds: i % 3 == 0 ? "普洱茶" : "铁观音",
-    oldpirce: i * 10,
-    currentpirce: i * 9,
-    Stock: i * 100,
-    status: i % 2 == 0 ? "上线" : "下线",
-    time: "2019-9-1" + (i % 10),
-    haha: function() {
-      if (i % 2 == 0) {
-        return ahah;
-      }
-    }
-  });
-}
-console.log(data);
-
-console.log(JSON.stringify(data));
 
 function onChange(pagination, filters, sorter) {
   console.log("params", pagination, filters, sorter);
 }
+
+//数据删除
+async function haha(data) {
+  console.log(data.key);
+
+  await this.$axios.get(
+    `http://localhost:8888/goods/mgoodslist/${data.key}`,
+    {}
+  );
+
+  let getdata = await this.$axios.get(
+    "http://localhost:8888/goods/mgoodslist",
+    {}
+  );
+  this.data = getdata.data.data;
+}
+
 export default {
+  async created() {
+    let getdata = await this.$axios.get(
+      "http://localhost:8888/goods/mgoodslist",
+      {}
+    );
+    this.data = getdata.data.data;
+    // console.log(getdata.data.data);
+  },
   data() {
     return {
       activeNames: ["1"],
@@ -148,7 +183,7 @@ export default {
   },
   methods: {
     onChange,
-
+    haha,
     //选择和操作
     start() {
       this.loading = true;
@@ -209,7 +244,7 @@ export default {
 
 .list {
   width: 100%;
-  height: 64%;
+  height: 1000px;
   /* margin-top: 100px; */
   background: #ccc;
   overflow: hidden;
