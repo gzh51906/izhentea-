@@ -110,7 +110,7 @@ Router.get('/mgoodskinds/:id', (req, res) => {
 //--------------------------M_userlist
 Router.get('/muserlist', async (req, res) => {
     let { skip, limit, sort } = req.query;
-    let data = await find('M_userlist', {}, { skip, limit, sort });
+    let data = await find('M_userlist1', {}, { skip, limit, sort });
     res.send(formatData({ data }))
 })
 
@@ -121,9 +121,9 @@ Router.get('/muserlist/:id', (req, res) => {
 
     let data
     try {
-        remove('M_userlist', { key: id })
-        // res.send(formatData())
-        res.send("1")
+        remove('M_userlist1', { key: id })
+        res.send(formatData())
+        // res.send("1")
     } catch (err) {
         res.send(formatData({ code: 0 }))
     }

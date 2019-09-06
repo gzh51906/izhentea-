@@ -37,15 +37,9 @@
         <span slot="action" slot-scope="text">
           <a href="javascript:;">修改</a>
           <a-divider type="vertical" />
-          <!-- <a href="javascript:;" @click="delete">删除</a> -->
-          <a-button click="delete" @click="haha(text)">删除</a-button>
+          <a-button click="delete" @click="deleteDate(text)">删除</a-button>
           <a-divider type="vertical" />
           <a href="javascript:;">上架</a>
-          <!-- <a-divider type="vertical" /> -->
-          <!-- <a href="javascript:;" class="ant-dropdown-link">
-          More actions
-          <a-icon type="down" />
-          </a>-->
         </span>
       </a-table>
     </div>
@@ -64,8 +58,8 @@ const columns = [
   },
   {
     title: "商品名称",
-    dataIndex: "name",
-    key: "name"
+    dataIndex: "goodstitle",
+    key: "goodstitle"
   },
   {
     title: "分类",
@@ -106,21 +100,21 @@ const columns = [
     sorter: (a, b) => a.kinds.length - b.kinds.length
   },
   {
-    title: "价格(原价)",
-    dataIndex: "oldpirce",
-    key: "oldpirce",
-    sorter: (a, b) => a.oldpirce - b.oldpirce
+    title: "商品价格(原价)",
+    dataIndex: "goodsprice",
+    key: "goodsprice",
+    sorter: (a, b) => a.goodsprice - b.goodsprice
   },
   {
-    title: "价格(现价)",
-    dataIndex: "currentpirce",
-    key: "currentpirce",
-    sorter: (a, b) => a.currentpirce - b.currentpirce
+    title: "出售价格(现价)",
+    dataIndex: "salepirce",
+    key: "salepirce",
+    sorter: (a, b) => a.salepirce - b.salepirce
   },
   {
     title: "库存",
-    dataIndex: "Stock",
-    key: "Stock"
+    dataIndex: "stock",
+    key: "stock"
   },
   {
     title: "状态",
@@ -147,7 +141,7 @@ function onChange(pagination, filters, sorter) {
 }
 
 //数据删除
-async function haha(data) {
+async function deleteDate(data) {
   console.log(data.key);
 
   await this.$axios.get(
@@ -161,6 +155,8 @@ async function haha(data) {
   );
   this.data = getdata.data.data;
 }
+
+//商品上下架
 
 export default {
   async created() {
@@ -183,7 +179,7 @@ export default {
   },
   methods: {
     onChange,
-    haha,
+    deleteDate,
     //选择和操作
     start() {
       this.loading = true;
