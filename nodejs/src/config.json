@@ -1,5 +1,5 @@
 {
-    "PORT": 8888,
+    "PORT": 1907,
     "DBurl": "mongodb://localhost:27017",
     "DBname": "izhentea"
 }

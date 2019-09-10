@@ -20,6 +20,7 @@ Vue.use(VueRouter);
 
 // 3. 实例化router并配置参数
 let router = new VueRouter({
+    mode: 'history',
     routes: [{
         // 当浏览器路径为/home时，渲染Home组件内容
         name: 'home',
@@ -59,7 +60,7 @@ let router = new VueRouter({
             }, {
                 // 当浏览器路径为/home时，渲染Home组件内容
                 name: 'goodspatch',
-                path: 'goodspatch',
+                path: 'goodspatch/:id',
                 component: Goodspatch
             }
         ]

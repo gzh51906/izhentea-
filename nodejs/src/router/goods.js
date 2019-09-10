@@ -2,7 +2,7 @@ const express = require('express');
 
 const Router = express.Router();
 
-const { insert, remove, find } = require('../db/mongo');
+const { insert, remove, find, update } = require('../db/mongo');
 
 const { formatData } = require('../utils');
 
@@ -23,11 +23,11 @@ Router.post('/plus', async (req, res) => {
 
 // 增加商品
 Router.post('/addgoods', async (req, res) => {
-    let { goodstitle, goodstitle2, goodsprice, saleprice, stock, kinds, nature, text, status } = req.body;
-    console.log({ goodstitle, goodstitle2, goodsprice, saleprice, stock, kinds, nature, text, status })
+    let { goodstitle, goodstitle2, goodsprice, saleprice, stock, kinds, nature, text, status, src } = req.body;
+    // console.log({ goodstitle, goodstitle2, goodsprice, saleprice, stock, kinds, nature, text, status })
     try {
 
-        insert('M_goodslist', { goodstitle, goodstitle2, goodsprice, saleprice, stock, kinds, nature, text, status });
+        insert('M_goodslist', { goodstitle, goodstitle2, goodsprice, saleprice, stock, kinds, nature, text, status, src });
         res.send(formatData())
     } catch (err) {
         res.send(formatData({ code: 0 }))
@@ -57,13 +57,23 @@ Router.delete('/orderdel', async (req, res) => {
 //--------------------------M_goodslist
 
 
+// 更改（ M_goodslist  商品数据）：
+Router.patch("/upgoodlist", async (req, res) => {
+    let { _id, goodstitle, goodstitle2, goodsprice, salesprice, stock, nature, status, text, kinds, src, time } = req.body
+
+
+    let data = await update('M_goodslist', { _id }, { $set: { goodstitle, goodstitle2, goodsprice, salesprice, stock, nature, status, text, kinds, src, time } })
+    res.send(formatData({ data }))
+    // console.log({ _id, goodstitle, goodstitle2, goodsprice, salesprice, stock, nature, status, text, kinds })
+})
+
 
 
 
 // 查（获取 M_goodslist  所有商品数据）：get /user
 Router.get('/mgoodslist', async (req, res) => {
-    let { skip, limit, sort } = req.query;
-    let data = await find('M_goodslist', {}, { skip, limit, sort });
+    let { skip, limit, sort, _id } = req.query;
+    let data = await find('M_goodslist', {}, { skip, limit, sort, _id });
     // console.log(data);
 
     res.send(formatData({ data }))

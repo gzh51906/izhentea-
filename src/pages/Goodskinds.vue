@@ -71,12 +71,12 @@ function onChange(pagination, filters, sorter) {
 async function deleteData(data) {
   console.log(data.key);
   await this.$axios.get(
-    `http://localhost:8888/goods/mgoodskinds/${data.key}`,
+    `http://47.96.238.230:1907/goods/mgoodskinds/${data.key}`,
     {}
   );
 
   let getdata = await this.$axios.get(
-    "http://localhost:8888/goods/mgoodskinds",
+    "http://47.96.238.230:1907/goods/mgoodskinds",
     {}
   );
   this.data = getdata.data.data;
@@ -85,7 +85,7 @@ async function deleteData(data) {
 export default {
   async created() {
     let getdata = await this.$axios.get(
-      "http://localhost:8888/goods/mgoodskinds",
+      "http://47.96.238.230:1907/goods/mgoodskinds",
       {}
     );
 

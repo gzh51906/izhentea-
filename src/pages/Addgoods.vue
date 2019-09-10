@@ -37,9 +37,10 @@
     <!-- 上传图片 -->
     <div class="clearfix">
       <a-upload
-        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+        action="http://47.96.238.230:1907/upload/goods"
         listType="picture-card"
         :fileList="fileList"
+        name="goods"
         @preview="handlePreview"
         @change="handleChange"
       >
@@ -75,6 +76,7 @@
       <a-textarea placeholder="Basic usage" :rows="4" @change="miaoshu" v-model="text" />
     </div>
     <!-- 提交 -->
+
     <div class="check">
       <p></p>
       <a-button type="primary" @click="ok">提交</a-button>
@@ -104,8 +106,7 @@ export default {
       nature: [],
       // 上架
       status: "上线",
-      // 描述
-      goodstext: "",
+
       // 下拉选择
       value: undefined,
       treeData: [
@@ -148,15 +149,8 @@ export default {
       // 上传图片
       previewVisible: false,
       previewImage: "",
-      fileList: [
-        {
-          uid: "-1",
-          name: "xxx.png",
-          status: "done",
-          url:
-            "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-        }
-      ],
+      fileList: [],
+      src: [],
       // 商品描述
       text: ""
     };
@@ -166,12 +160,15 @@ export default {
     handleCancel() {
       this.previewVisible = false;
     },
+    // 点击预览图片的函数
     handlePreview(file) {
       this.previewImage = file.url || file.thumbUrl;
       this.previewVisible = true;
     },
+    // 点击添加图片的函数
     handleChange({ fileList }) {
       this.fileList = fileList;
+      // console.log(this.fileList);
     },
     // 选择 商品属性
     onChange1(e) {
@@ -217,6 +214,21 @@ export default {
     },
     //提交按钮
     async ok() {
+      let now = new Date();
+      // 年
+      let year = now.getFullYear();
+      //月
+      let m = now.getMonth() + 1;
+      // 日
+      let day = now.getDate();
+      // 日期拼接
+      let shijian = `${year}-${m}-${day}`;
+      // 图片
+      this.fileList.forEach(item => {
+        this.src.push("http://47.96.238.230:1907/" + item.response[0].path);
+      });
+      console.log(this.src);
+
       // this.id++;
       // console.log("success");
       // console.log(
@@ -231,7 +243,7 @@ export default {
       //   this.putaway
       // );
       let { data } = await this.$axios.post(
-        "http://localhost:8888/goods/addgoods",
+        "http://47.96.238.230:1907/goods/addgoods",
         {
           // id: this.id,
           goodstitle: this.goodstitle,
@@ -242,7 +254,9 @@ export default {
           kinds: this.value,
           nature: this.nature,
           text: this.text,
-          status: this.status
+          status: this.status,
+          time: shijian,
+          src: this.src
         }
       );
       alert("添加成功");
@@ -253,9 +267,11 @@ export default {
       this.stock = "";
       this.nature = [];
       this.status = "上线";
-      this.goodstext = "";
+      this.text = "";
       this.value = undefined;
-      this.goodstext = "";
+      this.src = [];
+      this.fileList = [];
+      // this.goodstext = "";
     }
   },
   watch: {
@@ -309,5 +325,14 @@ export default {
   font-size: 0.24rem;
   padding-right: 0.4rem;
   width: 1.666667rem;
+}
+.ant-upload-select-picture-card i {
+  font-size: 32px;
+  color: #999;
+}
+
+.ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  color: #666;
 }
 </style>

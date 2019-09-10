@@ -196,7 +196,7 @@ export default {
       ) {
         console.log("success");
         let { data } = await this.$axios.post(
-          "http://localhost:8888/user/reg",
+          "http://47.96.238.230:1907/user/reg",
           {
             // id: this.id,
             user: this.user,

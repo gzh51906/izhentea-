@@ -122,14 +122,14 @@ export default {
     },
     async del(id) {
       let { data } = await this.$axios.delete(
-        "http://localhost:8888/goods/orderdel",
+        "http://47.96.238.230:1907/goods/orderdel",
         {
           data: { _id: id._id }
         }
       );
 
       let newdata = await this.$axios.get(
-        "http://localhost:8888/goods/orderlist",
+        "http://47.96.238.230:1907/goods/orderlist",
         {}
       );
       this.list = newdata.data.data;
@@ -144,7 +144,7 @@ export default {
     // 获取数据库里的商品信息
     let {
       data: { data }
-    } = await this.$axios.get("http://localhost:8888/goods/orderlist", {});
+    } = await this.$axios.get("http://47.96.238.230:1907/goods/orderlist", {});
     this.list = data;
   },
   watch: {

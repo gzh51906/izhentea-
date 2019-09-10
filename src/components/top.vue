@@ -4,9 +4,9 @@
       <div class="top-left">
         <span>首页</span>
         <span>/</span>
-        <span>商品管理</span>
+        <span>{{text[0]}}</span>
         <span>/</span>
-        <span>商品分类</span>
+        <span>{{text[1]}}</span>
       </div>
       <div class="top-right">退出</div>
     </div>
@@ -15,7 +15,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: ["text"]
+};
 </script>
 
 <style scoped>

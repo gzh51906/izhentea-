@@ -41,7 +41,7 @@
     </div>
 
     <div class="H_right">
-      <top></top>
+      <top :text="text"></top>
       <router-view></router-view>
     </div>
   </div>
@@ -51,6 +51,7 @@ import top from "../components/top.vue";
 export default {
   data() {
     return {
+      text: ["商品管理", "商品列表"],
       activeKey: 0,
       submenu: [
         {
@@ -119,6 +120,24 @@ export default {
     handleClick(e) {
       console.log("click ", e);
       this.current = e.key;
+      if (e.key == 1) {
+        this.text = ["商品管理", "商品列表"];
+      }
+      if (e.key == 2) {
+        this.text = ["商品管理", "商品分类"];
+      }
+      if (e.key == 3) {
+        this.text = ["商品管理", "添加商品"];
+      }
+      if (e.key == 4) {
+        this.text = ["用户管理", "用户列表"];
+      }
+      if (e.key == 5) {
+        this.text = ["用户管理", "添加商品"];
+      }
+      if (e.key == 6) {
+        this.text = ["订单管理", "订单列表"];
+      }
     },
     changeTheme(checked) {
       this.theme = checked ? "dark" : "light";

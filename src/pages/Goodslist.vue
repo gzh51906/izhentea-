@@ -35,7 +35,7 @@
         :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
       >
         <span slot="action" slot-scope="text">
-          <a href="javascript:;" @click="goto('goodspatch')">修改</a>
+          <a href="javascript:;" @click="goto('goodspatch',text._id)">修改</a>
           <a-divider type="vertical" />
           <a-button click="delete" @click="deleteDate(text)">删除</a-button>
           <a-divider type="vertical" />
@@ -107,9 +107,9 @@ const columns = [
   },
   {
     title: "出售价格(现价)",
-    dataIndex: "salepirce",
-    key: "salepirce",
-    sorter: (a, b) => a.salepirce - b.salepirce
+    dataIndex: "saleprice",
+    key: "saleprice",
+    sorter: (a, b) => a.saleprice - b.saleprice
   },
   {
     title: "库存",
@@ -145,12 +145,12 @@ async function deleteDate(data) {
   console.log(data.key);
 
   await this.$axios.get(
-    `http://localhost:8888/goods/mgoodslist/${data.key}`,
+    `http://47.96.238.230:1907/goods/mgoodslist/${data.key}`,
     {}
   );
 
   let getdata = await this.$axios.get(
-    "http://localhost:8888/goods/mgoodslist",
+    "http://47.96.238.230:1907/goods/mgoodslist",
     {}
   );
   this.data = getdata.data.data;
@@ -161,11 +161,11 @@ async function deleteDate(data) {
 export default {
   async created() {
     let getdata = await this.$axios.get(
-      "http://localhost:8888/goods/mgoodslist",
+      "http://47.96.238.230:1907/goods/mgoodslist",
       {}
     );
     this.data = getdata.data.data;
-    // console.log(getdata.data.data);
+    console.log(getdata);
   },
   data() {
     return {
@@ -193,8 +193,9 @@ export default {
       console.log("selectedRowKeys changed: ", selectedRowKeys);
       this.selectedRowKeys = selectedRowKeys;
     },
-    goto(name) {
-      this.$router.push({ name });
+    goto(name, id) {
+      this.$router.push({ name, params: { id } });
+      // console.log(text);
     }
   },
   computed: {

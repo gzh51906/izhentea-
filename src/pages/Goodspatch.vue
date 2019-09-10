@@ -2,19 +2,19 @@
   <div class="addgoods">
     <div class="goodsname">
       <label for="name">商品名称</label>
-      <input type="text" name id="name" placeholder="请输入标题" />
+      <input type="text" name id="name" v-model="goodstitle" />
       <span>50字以内</span>
     </div>
     <div class="goodsname">
       <label for="two">商品副标题</label>
-      <input type="text" name id="two" placeholder="请输入" />
+      <input type="text" name id="two" placeholder="请输入" v-model="goodstitle2" />
       <span>100字以内</span>
     </div>
     <div class="goodsname">
       <label for="price">商品价格</label>
-      <input type="text" name id="price" placeholder="请输入" />
+      <input type="text" name id="price" placeholder="请输入" v-model="goodsprice" />
       <label for="sale">销售价格</label>
-      <input type="text" name id="sale" placeholder="请输入" />
+      <input type="text" name id="sale" placeholder="请输入" v-model="saleprice" />
     </div>
     <div class="goodsname">
       <label for="two">商品分类</label>
@@ -37,9 +37,10 @@
     <!-- 上传图片 -->
     <div class="clearfix">
       <a-upload
-        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+        action="http://localhost:8888/upload/goods"
         listType="picture-card"
         :fileList="fileList"
+        name="goods"
         @preview="handlePreview"
         @change="handleChange"
       >
@@ -55,7 +56,7 @@
     <!-- 库存 -->
     <div class="goodsname">
       <label for="kucun">库存</label>
-      <input type="text" name id="kucun" placeholder="请输入" />
+      <input type="text" name id="kucun" placeholder="请输入" v-model="stock" />
     </div>
     <!-- 选择 -->
     <div class="check">
@@ -86,39 +87,68 @@
 export default {
   data() {
     return {
+      // 商品标题
+      goodstitle: "",
+      // 商品副标题
+      goodstitle2: "",
+      // 商品价格
+      goodsprice: "",
+      // 商品售价
+      saleprice: "",
+      // 商品类别
+      // sort: "",
+      // 库存
+      stock: "",
+      // 商品属性
+      nature: [],
+      // 上架
+      status: "上线",
+      // 描述
+      text: "",
       // 下拉选择
       value: undefined,
       treeData: [
         {
-          title: "手机",
-          value: "0-0",
+          title: "铁观音",
+          value: "铁观音",
           key: "0-0"
         },
         {
-          title: "电脑",
-          value: "0-1",
+          title: "大红袍",
+          value: "大红袍",
           key: "0-1"
         },
         {
-          title: "电视",
-          value: "0-2",
+          title: "白茶",
+          value: "白茶",
           key: "0-2"
+        },
+        {
+          title: "碧螺春",
+          value: "碧螺春",
+          key: "0-3"
+        },
+        {
+          title: "普洱",
+          value: "普洱",
+          key: "0-4"
+        },
+        {
+          title: "红茶",
+          value: "红茶",
+          key: "0-5"
+        },
+        {
+          title: "绿茶",
+          value: "绿茶",
+          key: "0-6"
         }
       ],
       // 上传图片
       previewVisible: false,
       previewImage: "",
-      fileList: [
-        {
-          uid: "-1",
-          name: "xxx.png",
-          status: "done",
-          url:
-            "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-        }
-      ],
-      // 商品描述
-      text: ""
+      fileList: [],
+      src: []
     };
   },
   methods: {
@@ -132,16 +162,32 @@ export default {
     },
     handleChange({ fileList }) {
       this.fileList = fileList;
+      console.log(this.fileList);
     },
     // 选择
     onChange1(e) {
-      console.log(`checked = ${e.target.checked}`);
+      if (e.target.checked) {
+        this.nature.push("热卖");
+      } else {
+        let a = this.nature.indexOf("热卖");
+        this.nature.splice(a, 1);
+      }
     },
     onChange2(e) {
-      console.log(`checked = ${e.target.checked}`);
+      if (e.target.checked) {
+        this.nature.push("推荐");
+      } else {
+        let a = this.nature.indexOf("推荐");
+        this.nature.splice(a, 1);
+      }
     },
     onChange3(e) {
-      console.log(`checked = ${e.target.checked}`);
+      if (e.target.checked) {
+        this.nature.push("促销");
+      } else {
+        let a = this.nature.indexOf("促销");
+        this.nature.splice(a, 1);
+      }
     },
     // 上架
     shangjia(e) {
@@ -153,8 +199,52 @@ export default {
       console.log(this.text);
     },
     //提交按钮
-    ok() {
-      console.log("success");
+    async ok() {
+      let now = new Date();
+      // 年
+      let year = now.getFullYear();
+      //月
+      let m = now.getMonth() + 1;
+      // 日
+      let day = now.getDate();
+      // 日期拼接
+      let shijian = `${year}-${m}-${day}`;
+      // 图片
+      this.fileList.forEach(item => {
+        this.src.push("http://47.96.238.230:1907/" + item.response[0].path);
+      });
+      console.log(this.src);
+      let {
+        data: { data }
+      } = await this.$axios.patch(
+        "http://47.96.238.230:1907/goods/upgoodlist",
+        {
+          _id: this.$route.params.id,
+          goodstitle: this.goodstitle,
+          goodstitle2: this.goodstitle2,
+          goodsprice: this.goodsprice,
+          saleprice: this.saleprice,
+          stock: this.stock,
+          nature: this.nature,
+          status: this.status,
+          text: this.text,
+          kinds: this.value,
+          src: this.src,
+          time: shijian
+        }
+      );
+      alert("修改成功");
+      this.goodstitle = "";
+      this.goodstitle2 = "";
+      this.goodsprice = "";
+      this.saleprice = "";
+      this.stock = "";
+      this.nature = [];
+      this.status = "上线";
+      this.text = "";
+      this.value = undefined;
+      this.src = [];
+      this.fileList = [];
     }
   },
   watch: {
@@ -162,6 +252,20 @@ export default {
     value(value) {
       console.log(value);
     }
+  },
+  async created() {
+    let id = this.$route.params.id;
+    console.log(id);
+    let {
+      data: { data }
+    } = await this.$axios.get("http://47.96.238.230:1907/goods/mgoodslist", {
+      params: { _id: id }
+    });
+    this.goodstitle = data[0].goodstitle;
+    this.goodstitle2 = data[0].goodstitle2;
+    this.goodsprice = data[0].goodsprice;
+    this.salesprice = data[0].salesprice;
+    this.stock = data[0].stock;
   }
 };
 </script>

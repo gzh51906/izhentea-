@@ -62,18 +62,25 @@ exports.update = async (colName, query, data) => {
     // query: 查询条件
     // data: 更新的数据
     let { db, client } = await connect();
+    // console.log(query, data)
+    if (query._id) {
+
+        query._id = ObjectId(query._id);
+
+    }
 
     //  获取集合
     let collection = db.collection(colName);
 
-    collection.updateMany(query, data)
+    collection.update(query, data)
+
 
     client.close();
 }
 
 
 // @查
-exports.find = async (colName, query = {}, { sort, limit, skip, asc } = {}) => {
+exports.find = async (colName, query = {}, { sort, limit, skip, asc, _id } = {}) => {
     // colName：集合名称
     // query: 查询条件
     // data: 更新的数据
@@ -84,11 +91,14 @@ exports.find = async (colName, query = {}, { sort, limit, skip, asc } = {}) => {
 
     //  针对id进行处理
     // '5d5667d8f174c9ca8ea897d8' -> ObjectId("5d5667d8f174c9ca8ea897d8")
-    if (query._id) {
-        query._id = ObjectId(query._id);
-    }
 
+    if (query._id) {
+
+        query._id = ObjectId(query._id);
+
+    }
     let result = collection.find(query);
+
 
     // 筛选
     if (sort) {
@@ -103,6 +113,10 @@ exports.find = async (colName, query = {}, { sort, limit, skip, asc } = {}) => {
 
     if (skip) {
         result = result.skip(skip);
+    }
+    if (_id) {
+        _id = ObjectId(_id);
+        result = collection.find({ _id });
     }
 
     let data = await result.toArray();
